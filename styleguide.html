@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スタイルガイド | ライオンズセレブ富士見台壱番館 LP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous">
+  <style>
+    /* ============================================================
+       LP CSS VARIABLES — index.html の :root と常に同期
+    ============================================================ */
+    :root {
+      --c-primary:    #1C3A5E;
+      --c-primary-dk: #0F1F35;
+      --c-accent:     #C9A96E;
+      --c-accent-lt:  #E8D5B0;
+      --c-bg:         #FAFAF8;
+      --c-bg-warm:    #F4EFE8;
+      --c-text:       #2C2C2C;
+      --c-text-mid:   #555;
+      --c-text-lt:    #999;
+      --c-border:     #E2D9CE;
+      --c-white:      #FFF;
+
+      --font-sans:  'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN', 'Noto Sans JP', sans-serif;
+      --font-serif: 'Hiragino Mincho ProN', 'ヒラギノ明朝 ProN', 'Noto Serif JP', serif;
+
+      --sg-sidebar: 224px;
+      --sg-code:    #12192b;
+    }
+
+    /* === Reset === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: #ffffff; color: #111827; -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .sg-wrap { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sg-sidebar {
+      width: var(--sg-sidebar); min-height: 100vh;
+      background: #18181b; position: fixed; top: 0; left: 0;
+      overflow-y: auto; padding-bottom: 48px; z-index: 100;
+    }
+    .sg-sidebar-head {
+      padding: 20px 18px 16px; border-bottom: 1px solid #2e2e32;
+    }
+    .sg-sidebar-head h1 { font-size: .8rem; font-weight: 700; color: #e4e4e7; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 5px; }
+    .sg-sidebar-head p  { font-size: .72rem; color: #71717a; line-height: 1.65; }
+    .sg-nav { list-style: none; padding: 8px 0; }
+    .sg-nav a { display: block; padding: 8px 18px; font-size: .84rem; color: #a1a1aa; transition: color .14s, background .14s; border-left: 2px solid transparent; }
+    .sg-nav a:hover   { color: #e4e4e7; background: rgba(255,255,255,.04); border-left-color: #3f3f46; }
+    .sg-nav a.is-active { color: #fff; background: rgba(255,255,255,.07); border-left-color: #3b82f6; }
+    .sg-nav .nav-group { padding: 16px 18px 5px; font-size: .68rem; color: #52525b; letter-spacing: .12em; text-transform: uppercase; }
+
+    /* Main */
+    .sg-main { margin-left: var(--sg-sidebar); flex: 1; padding-bottom: 80px; }
+
+    /* Header */
+    .sg-hero {
+      background: #f9fafb; padding: 32px 48px 24px; border-bottom: 1px solid #e5e7eb;
+    }
+    .sg-hero-eyebrow {
+      display: inline-block; background: #f3f4f6; color: #6b7280;
+      border: 1px solid #e5e7eb; font-size: .72rem; font-weight: 600;
+      letter-spacing: .08em; padding: 3px 10px; border-radius: 3px;
+      margin-bottom: 12px; text-transform: uppercase;
+    }
+    .sg-hero h2 { font-size: 1.6rem; font-weight: 700; color: #111827; margin-bottom: 8px; }
+    .sg-hero p  { color: #6b7280; font-size: .9rem; line-height: 1.85; }
+    .sg-hero code {
+      background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb;
+      font-family: 'SF Mono', Consolas, monospace; font-size: .82rem;
+      padding: 2px 7px; border-radius: 3px;
+    }
+
+    /* Section */
+    .sg-section { padding: 48px 48px; border-bottom: 1px solid #e5e7eb; }
+    .sg-section:last-child { border-bottom: none; }
+    .sg-section-title {
+      font-size: 1.1rem; font-weight: 700; color: #111827;
+      padding-bottom: 12px; border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+    }
+    .sg-num {
+      background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb;
+      font-size: .7rem; font-weight: 700; width: 24px; height: 24px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .sg-section-sub { font-size: .88rem; color: #6b7280; margin: 8px 0 28px; line-height: 1.85; }
+    .sg-section-sub code {
+      background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb;
+      font-family: 'SF Mono', Consolas, monospace; font-size: .82rem;
+      padding: 2px 7px; border-radius: 3px;
+    }
+
+    /* ============================================================
+       MARKUP BLOCK — 各パーツの基本単位
+       preview + code をセットで表示
+    ============================================================ */
+    .mu {
+      margin-bottom: 20px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .mu-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #1f2937; color: #93c5fd;
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+      font-size: .8rem; padding: 5px 14px;
+      border-radius: 0 0 6px 0;
+      position: absolute; top: 0; left: 0;
+    }
+    .mu-preview {
+      background: var(--c-white);
+      padding: 40px 28px 28px;
+      position: relative;
+      min-height: 60px;
+    }
+    .mu-preview.dark {
+      background: var(--c-primary-dk);
+    }
+    .mu-preview.warm {
+      background: var(--c-bg-warm);
+    }
+    .mu-code {
+      background: var(--sg-code);
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 14px 18px;
+      overflow-x: auto;
+    }
+    .mu-code pre {
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+      font-size: .82rem;
+      line-height: 1.75;
+      color: #a8b4c8;
+      white-space: pre;
+    }
+    .mu-code pre .hl-tag   { color: #7eb8e6; }
+    .mu-code pre .hl-attr  { color: #f0c27a; }
+    .mu-code pre .hl-val   { color: #9de2a0; }
+    .mu-code pre .hl-txt   { color: #d0d8e8; }
+    .mu-code pre .hl-com   { color: #556070; font-style: italic; }
+
+    /* ============================================================
+       COLOR PALETTE
+    ============================================================ */
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .color-swatch { border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb; cursor: pointer; transition: transform .14s, box-shadow .14s; }
+    .color-swatch:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    .color-swatch__block { height: 68px; }
+    .color-swatch__info { background: #fff; padding: 9px 11px; }
+    .color-swatch__name { font-size: .82rem; font-weight: 600; color: #111827; margin-bottom: 3px; }
+    .color-swatch__var  { font-size: .72rem; color: #3b82f6; font-family: 'SF Mono', Consolas, monospace; }
+    .color-swatch__hex  { font-size: .72rem; color: #9ca3af; font-family: 'SF Mono', Consolas, monospace; margin-top: 2px; }
+    .color-group-title  { font-size: .75rem; color: #9ca3af; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #e5e7eb; }
+
+    /* ============================================================
+       ICONS
+    ============================================================ */
+    .icon-group-title { font-size: .75rem; color: #9ca3af; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #e5e7eb; }
+    .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; margin-bottom: 24px; }
+    .icon-item { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px 8px; text-align: center; cursor: pointer; transition: border-color .14s, background .14s; }
+    .icon-item:hover { border-color: #3b82f6; background: #eff6ff; }
+    .icon-item i { font-size: 1.4rem; color: #374151; display: block; margin-bottom: 8px; }
+    .icon-item span { font-size: .68rem; color: #9ca3af; line-height: 1.5; display: block; word-break: break-all; font-family: 'SF Mono', Consolas, monospace; }
+
+    /* ============================================================
+       LP の実スタイル (index.html から引用 / プレビュー用)
+    ============================================================ */
+
+    /* ボタン */
+    .btn { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 15px 0; width: 100%; font-size: .95rem; font-weight: 700; border: none; border-radius: 4px; cursor: pointer; font-family: var(--font-sans); letter-spacing: .04em; transition: all .25s ease; }
+    .btn-gold  { background: linear-gradient(135deg, #C9A96E 0%, #b8955a 100%); color: var(--c-white); }
+    .btn-ghost { background: transparent; color: var(--c-white); border: 1.5px solid rgba(255,255,255,.4); }
+
+    /* セクション見出し */
+    .sec-eye   { display: block; color: var(--c-accent); font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; margin-bottom: 8px; }
+    .sec-title { font-family: var(--font-serif); font-size: 1.4rem; letter-spacing: .04em; line-height: 1.5; color: var(--c-primary); }
+    .sec-bar   { width: 36px; height: 2px; background: var(--c-accent); margin: 14px auto 0; }
+    .sec-hd    { text-align: center; }
+
+    /* hero */
+    .hero__loc   { color: rgba(255,255,255,.45); font-size: .72rem; letter-spacing: .08em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .hero__loc::before { content: ''; width: 20px; height: 1px; background: var(--c-accent); }
+    .hero__badge { display: inline-block; border: 1px solid rgba(201,169,110,.5); color: rgba(255,255,255,.7); font-size: .72rem; letter-spacing: .06em; padding: 6px 14px; border-radius: 2px; }
+    .hero__title { font-family: var(--font-serif); font-size: 2rem; color: var(--c-white); line-height: 1.5; letter-spacing: .03em; margin-bottom: 8px; }
+    .hero__title em { color: var(--c-accent); font-style: normal; }
+    .hero__sub   { color: rgba(255,255,255,.55); font-size: .85rem; line-height: 1.85; margin-bottom: 28px; }
+    .hero__price-lbl { color: rgba(255,255,255,.4); font-size: .66rem; letter-spacing: .12em; margin-bottom: 4px; }
+    .hero__price { font-family: var(--font-serif); font-size: 2.8rem; color: var(--c-accent); font-weight: 700; line-height: 1; }
+    .hero__price small { font-size: 1rem; color: rgba(255,255,255,.45); font-weight: 400; margin-left: 4px; }
+
+    /* stats */
+    .stats { background: var(--c-primary); display: grid; grid-template-columns: repeat(2,1fr); }
+    .stat  { padding: 20px 16px; text-align: center; border-right: 1px solid rgba(255,255,255,.1); border-bottom: 1px solid rgba(255,255,255,.1); }
+    .stat:nth-child(2n)  { border-right: none; }
+    .stat:nth-child(n+3) { border-bottom: none; }
+    .stat__lbl { color: rgba(255,255,255,.4); font-size: .64rem; letter-spacing: .1em; margin-bottom: 4px; }
+    .stat__val { color: var(--c-accent); font-size: 1.5rem; font-weight: 700; line-height: 1.1; }
+    .stat__val small { color: rgba(255,255,255,.55); font-size: .7rem; font-weight: 400; }
+
+    /* feat-card */
+    .feat-card { background: var(--c-white); border: 1px solid var(--c-border); border-radius: 8px; padding: 22px 18px 22px 22px; display: flex; gap: 14px; align-items: flex-start; position: relative; overflow: hidden; }
+    .feat-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--c-accent), var(--c-accent-lt)); }
+    .feat-card__ico   { font-size: 1.5rem; flex-shrink: 0; color: var(--c-accent); width: 1.8em; text-align: center; }
+    .feat-card__no    { position: absolute; bottom: 8px; right: 12px; font-size: 2rem; font-weight: 800; color: rgba(201,169,110,.1); line-height: 1; }
+    .feat-card__title { font-family: var(--font-serif); font-size: .95rem; color: var(--c-primary); margin-bottom: 5px; }
+    .feat-card__desc  { font-size: .78rem; color: var(--c-text-mid); line-height: 1.8; }
+
+    /* hl-item */
+    .hl-img   { width: 100%; aspect-ratio: 16/9; border-radius: 6px; margin-bottom: 16px; overflow: hidden; background: #111; }
+    .hl-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hl-no    { font-size: 2.8rem; font-weight: 800; color: rgba(201,169,110,.18); line-height: 1; margin-bottom: 2px; }
+    .hl-eye   { color: var(--c-accent); font-size: .64rem; letter-spacing: .16em; margin-bottom: 10px; }
+    .hl-title { font-family: var(--font-serif); font-size: 1.2rem; color: var(--c-primary); line-height: 1.5; margin-bottom: 10px; }
+    .hl-desc  { font-size: .8rem; color: var(--c-text-mid); line-height: 1.95; }
+
+    /* access-list */
+    .access-list { list-style: none; }
+    .access-list li { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--c-border); font-size: .8rem; }
+    .access-list li:first-child { padding-top: 0; }
+    .access-list li:last-child  { border-bottom: none; }
+    .a-ico { width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: transparent; border: 1px solid var(--c-border); color: var(--c-primary); }
+    .a-lbl { font-size: .64rem; color: var(--c-text-lt); letter-spacing: .06em; margin-bottom: 2px; }
+    .a-val { color: var(--c-text); font-weight: 500; line-height: 1.5; }
+
+    /* specs-table */
+    .specs-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+    .specs-table th, .specs-table td { padding: 12px 14px; border-bottom: 1px solid var(--c-border); text-align: left; vertical-align: top; }
+    .specs-table th { width: 34%; color: var(--c-text-lt); font-weight: 500; background: var(--c-bg-warm); font-size: .76rem; letter-spacing: .04em; }
+    .specs-table tr:last-child th, .specs-table tr:last-child td { border-bottom: none; }
+
+    /* area-desc */
+    .area-desc { font-size: .82rem; color: var(--c-text-mid); line-height: 1.95; padding: 16px 18px; background: var(--c-bg-warm); border-left: 3px solid var(--c-accent); border-radius: 0 4px 4px 0; }
+
+    /* form */
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: .75rem; color: var(--c-text-mid); margin-bottom: 5px; letter-spacing: .04em; }
+    .req { color: #c0392b; font-size: .62rem; margin-left: 4px; }
+    .form-input { width: 100%; padding: 12px 14px; border: 1px solid var(--c-border); border-radius: 4px; font-size: .88rem; font-family: var(--font-sans); background: var(--c-white); color: var(--c-text); transition: border-color .2s; outline: none; }
+    .form-input:focus { border-color: var(--c-accent); }
+
+    /* cta-band */
+    .cta-band { background: linear-gradient(135deg, var(--c-primary-dk) 0%, var(--c-primary) 100%); padding: 36px 24px; text-align: center; }
+    .cta-band__eye   { font-size: .6rem; letter-spacing: .22em; color: var(--c-accent); text-transform: uppercase; margin-bottom: 10px; display: block; }
+    .cta-band__title { font-family: var(--font-serif); font-size: 1.2rem; color: var(--c-white); margin-bottom: 8px; line-height: 1.7; }
+    .cta-band__sub   { font-size: .78rem; color: rgba(255,255,255,.5); margin-bottom: 24px; line-height: 1.85; }
+    .cta-band__btns  { display: flex; flex-direction: column; gap: 10px; max-width: 300px; margin: 0 auto; }
+
+    /* floorplan */
+    .floorplan-wrap  { background: var(--c-bg-warm); border: 1px solid var(--c-border); border-radius: 6px; padding: 20px; }
+    .floorplan-label { font-size: .72rem; color: var(--c-text-lt); letter-spacing: .1em; margin-bottom: 12px; }
+    .floorplan-img   { width: 100%; border-radius: 4px; display: block; }
+
+    /* pc-left */
+    .pc-left-demo { display: inline-flex; flex-direction: column; align-items: center; gap: 14px; padding: 24px 18px; }
+    .pc-left__name { writing-mode: vertical-rl; font-family: var(--font-serif); font-size: 1.2rem; font-weight: 600; letter-spacing: .22em; color: rgba(255,255,255,.9); line-height: 1.4; }
+    .pc-left__line { width: 1px; height: 48px; background: linear-gradient(to bottom, rgba(201,169,110,.6), rgba(255,255,255,.1)); }
+    .pc-left__sub  { writing-mode: vertical-rl; font-size: .58rem; letter-spacing: .18em; color: rgba(201,169,110,.55); text-transform: uppercase; }
+
+    /* hl-img placeholder for style guide */
+    .hl-img-ph { display: flex; align-items: center; justify-content: center; }
+    .hl-img-ph span { color: var(--c-text-lt); font-size: .72rem; }
+
+    /* ============================================================
+       TOAST
+    ============================================================ */
+    .copy-toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); background: #1f2937; color: #e5e7eb; font-size: .73rem; padding: 7px 16px; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity .22s; z-index: 9999; white-space: nowrap; border: 1px solid #374151; }
+    .copy-toast.show { opacity: 1; }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .sg-sidebar { display: none; }
+      .sg-main { margin-left: 0; }
+      .sg-section { padding: 36px 20px; }
+      .sg-hero { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sg-wrap">
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sg-sidebar">
+    <div class="sg-sidebar-head">
+      <h1>Style Guide</h1>
+      <p>ライオンズセレブ富士見台壱番館<br>LP デザインシステム</p>
+    </div>
+    <ul class="sg-nav">
+      <li class="nav-group">FOUNDATION</li>
+      <li><a href="#colors">カラーパレット</a></li>
+      <li><a href="#icons">アイコン</a></li>
+      <li class="nav-group">MARKUP</li>
+      <li><a href="#hero-markup">Hero セクション</a></li>
+      <li><a href="#headings-markup">セクション見出し</a></li>
+      <li><a href="#stats-markup">スタッツ帯</a></li>
+      <li><a href="#button-markup">ボタン</a></li>
+      <li><a href="#badge-markup">バッジ・ラベル</a></li>
+      <li><a href="#card-markup">フィーチャーカード</a></li>
+      <li><a href="#hl-markup">ハイライト</a></li>
+      <li><a href="#access-markup">アクセスリスト</a></li>
+      <li><a href="#table-markup">テーブル</a></li>
+      <li><a href="#form-markup">フォーム</a></li>
+      <li><a href="#cta-markup">CTAバンド</a></li>
+      <li><a href="#misc-markup">その他パーツ</a></li>
+    </ul>
+  </aside>
+
+  <!-- ========== MAIN ========== -->
+  <main class="sg-main">
+
+    <div class="sg-hero">
+      <span class="sg-hero-eyebrow">Style Guide</span>
+      <h2>ライオンズセレブ富士見台壱番館 LP</h2>
+      <p>タグ・クラスを使うとこう見える、というマークアップベースの確認ガイドです。<br>
+         ※ このファイルの <code>:root</code> の値は <code>index.html</code> の <code>:root</code> と常に揃えること。</p>
+    </div>
+
+    <!-- ===== 1. COLOR ===== -->
+    <section class="sg-section" id="colors">
+      <h2 class="sg-section-title"><span class="sg-num">1</span> カラーパレット</h2>
+      <p class="sg-section-sub">クリックで CSS 変数名をコピー。</p>
+
+      <p class="color-group-title">Primary（ネイビー）</p>
+      <div class="color-grid" style="margin-bottom:20px">
+        <div class="color-swatch" onclick="copy('var(--c-primary)')">
+          <div class="color-swatch__block" style="background:#1C3A5E"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">Primary</div><div class="color-swatch__var">--c-primary</div><div class="color-swatch__hex">#1C3A5E</div></div>
+        </div>
+        <div class="color-swatch" onclick="copy('var(--c-primary-dk)')">
+          <div class="color-swatch__block" style="background:#0F1F35"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">Primary Dark</div><div class="color-swatch__var">--c-primary-dk</div><div class="color-swatch__hex">#0F1F35</div></div>
+        </div>
+      </div>
+
+      <p class="color-group-title">Accent（ゴールド）</p>
+      <div class="color-grid" style="margin-bottom:20px">
+        <div class="color-swatch" onclick="copy('var(--c-accent)')">
+          <div class="color-swatch__block" style="background:#C9A96E"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">Accent</div><div class="color-swatch__var">--c-accent</div><div class="color-swatch__hex">#C9A96E</div></div>
+        </div>
+        <div class="color-swatch" onclick="copy('var(--c-accent-lt)')">
+          <div class="color-swatch__block" style="background:#E8D5B0"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">Accent Light</div><div class="color-swatch__var">--c-accent-lt</div><div class="color-swatch__hex">#E8D5B0</div></div>
+        </div>
+      </div>
+
+      <p class="color-group-title">Background / Border</p>
+      <div class="color-grid" style="margin-bottom:20px">
+        <div class="color-swatch" onclick="copy('var(--c-bg)')">
+          <div class="color-swatch__block" style="background:#FAFAF8;border-bottom:1px solid #E2D9CE"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">BG</div><div class="color-swatch__var">--c-bg</div><div class="color-swatch__hex">#FAFAF8</div></div>
+        </div>
+        <div class="color-swatch" onclick="copy('var(--c-bg-warm)')">
+          <div class="color-swatch__block" style="background:#F4EFE8;border-bottom:1px solid #E2D9CE"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">BG Warm</div><div class="color-swatch__var">--c-bg-warm</div><div class="color-swatch__hex">#F4EFE8</div></div>
+        </div>
+        <div class="color-swatch" onclick="copy('var(--c-white)')">
+          <div class="color-swatch__block" style="background:#FFF;border-bottom:1px solid #E2D9CE"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">White</div><div class="color-swatch__var">--c-white</div><div class="color-swatch__hex">#FFFFFF</div></div>
+        </div>
+        <div class="color-swatch" onclick="copy('var(--c-border)')">
+          <div class="color-swatch__block" style="background:#E2D9CE"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">Border</div><div class="color-swatch__var">--c-border</div><div class="color-swatch__hex">#E2D9CE</div></div>
+        </div>
+      </div>
+
+      <p class="color-group-title">Text</p>
+      <div class="color-grid">
+        <div class="color-swatch" onclick="copy('var(--c-text)')">
+          <div class="color-swatch__block" style="background:#2C2C2C"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">Text</div><div class="color-swatch__var">--c-text</div><div class="color-swatch__hex">#2C2C2C</div></div>
+        </div>
+        <div class="color-swatch" onclick="copy('var(--c-text-mid)')">
+          <div class="color-swatch__block" style="background:#555555"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">Text Mid</div><div class="color-swatch__var">--c-text-mid</div><div class="color-swatch__hex">#555555</div></div>
+        </div>
+        <div class="color-swatch" onclick="copy('var(--c-text-lt)')">
+          <div class="color-swatch__block" style="background:#999999"></div>
+          <div class="color-swatch__info"><div class="color-swatch__name">Text Light</div><div class="color-swatch__var">--c-text-lt</div><div class="color-swatch__hex">#999999</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 2. ICONS ===== -->
+    <section class="sg-section" id="icons">
+      <h2 class="sg-section-title"><span class="sg-num">2</span> アイコン</h2>
+      <p class="sg-section-sub">Font Awesome 6.5.2（CDN）。クリックでクラス名コピー。<br>使い方: <code >&lt;i class="fa-solid fa-〇〇"&gt;&lt;/i&gt;</code></p>
+
+      <p class="icon-group-title">LP 使用中 — フィーチャーカード</p>
+      <div class="icon-grid">
+        <div class="icon-item" onclick="copy('fa-solid fa-tree-city')"><i class="fa-solid fa-tree-city"></i><span>fa-tree-city</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-kitchen-set')"><i class="fa-solid fa-kitchen-set"></i><span>fa-kitchen-set</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-sun')"><i class="fa-solid fa-sun"></i><span>fa-sun</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-bell-concierge')"><i class="fa-solid fa-bell-concierge"></i><span>fa-bell-concierge</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-boxes-stacked')"><i class="fa-solid fa-boxes-stacked"></i><span>fa-boxes-stacked</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-paw')"><i class="fa-solid fa-paw"></i><span>fa-paw</span></div>
+      </div>
+
+      <p class="icon-group-title">LP 使用中 — アクセスリスト</p>
+      <div class="icon-grid">
+        <div class="icon-item" onclick="copy('fa-solid fa-train-subway')"><i class="fa-solid fa-train-subway"></i><span>fa-train-subway</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-cart-shopping')"><i class="fa-solid fa-cart-shopping"></i><span>fa-cart-shopping</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-store')"><i class="fa-solid fa-store"></i><span>fa-store</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-prescription-bottle-medical')"><i class="fa-solid fa-prescription-bottle-medical"></i><span>fa-prescription-bottle-medical</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-mug-hot')"><i class="fa-solid fa-mug-hot"></i><span>fa-mug-hot</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-hospital')"><i class="fa-solid fa-hospital"></i><span>fa-hospital</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-school')"><i class="fa-solid fa-school"></i><span>fa-school</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-school-flag')"><i class="fa-solid fa-school-flag"></i><span>fa-school-flag</span></div>
+      </div>
+
+      <p class="icon-group-title">LP 使用中 — ボタン</p>
+      <div class="icon-grid">
+        <div class="icon-item" onclick="copy('fa-regular fa-calendar')"><i class="fa-regular fa-calendar"></i><span>fa-calendar (reg)</span></div>
+        <div class="icon-item" onclick="copy('fa-regular fa-envelope')"><i class="fa-regular fa-envelope"></i><span>fa-envelope (reg)</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-map-location-dot')"><i class="fa-solid fa-map-location-dot"></i><span>fa-map-location-dot</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-phone')"><i class="fa-solid fa-phone"></i><span>fa-phone</span></div>
+      </div>
+
+      <p class="icon-group-title">候補 — 追加時に使えるアイコン</p>
+      <div class="icon-grid">
+        <div class="icon-item" onclick="copy('fa-solid fa-key')"><i class="fa-solid fa-key"></i><span>fa-key</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-house')"><i class="fa-solid fa-house"></i><span>fa-house</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-building')"><i class="fa-solid fa-building"></i><span>fa-building</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-elevator')"><i class="fa-solid fa-elevator"></i><span>fa-elevator</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-shield-halved')"><i class="fa-solid fa-shield-halved"></i><span>fa-shield-halved</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-leaf')"><i class="fa-solid fa-leaf"></i><span>fa-leaf</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-circle-check')"><i class="fa-solid fa-circle-check"></i><span>fa-circle-check</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-lock')"><i class="fa-solid fa-lock"></i><span>fa-lock</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-parking')"><i class="fa-solid fa-parking"></i><span>fa-parking</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-dumbbell')"><i class="fa-solid fa-dumbbell"></i><span>fa-dumbbell</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-snowflake')"><i class="fa-solid fa-snowflake"></i><span>fa-snowflake</span></div>
+        <div class="icon-item" onclick="copy('fa-solid fa-fire')"><i class="fa-solid fa-fire"></i><span>fa-fire</span></div>
+      </div>
+    </section>
+
+    <!-- ===== HERO ===== -->
+    <section class="sg-section" id="hero-markup">
+      <h2 class="sg-section-title"><span class="sg-num">3</span> Hero セクション</h2>
+      <p class="sg-section-sub">暗背景上のテキスト要素。ダークな preview 上で確認。</p>
+
+      <!-- hero__loc -->
+      <div class="mu">
+        <div class="mu-preview dark">
+          <span class="mu-tag">p.hero__loc</span>
+          <p class="hero__loc" style="margin-top:8px">愛知県名古屋市千種区富士見台</p>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"hero__loc"</span><span class="hl-tag">&gt;</span><span class="hl-txt">愛知県名古屋市千種区富士見台</span><span class="hl-tag">&lt;/p&gt;</span>
+<span class="hl-com">/* font-size:.72rem; color:rgba(255,255,255,.45); letter-spacing:.08em;
+   ::before → gold line (width:20px; height:1px) */</span></pre></div>
+      </div>
+
+      <!-- hero__badge -->
+      <div class="mu">
+        <div class="mu-preview dark">
+          <span class="mu-tag">div.hero__badge</span>
+          <div class="hero__badge" style="margin-top:8px">リフォーム完成済 &nbsp;·&nbsp; 即時引渡可 &nbsp;·&nbsp; ペット可</div>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"hero__badge"</span><span class="hl-tag">&gt;</span><span class="hl-txt">リフォーム完成済 · 即時引渡可 · ペット可</span><span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-com">/* border:1px solid rgba(201,169,110,.5); color:rgba(255,255,255,.7);
+   font-size:.72rem; padding:6px 14px; border-radius:2px; */</span></pre></div>
+      </div>
+
+      <!-- hero__title -->
+      <div class="mu">
+        <div class="mu-preview dark">
+          <span class="mu-tag">h1.hero__title</span>
+          <h1 class="hero__title" style="margin-top:8px">静けさと品格が息づく、<br><em>富士見台</em>という選択。</h1>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;h1</span> <span class="hl-attr">class</span>=<span class="hl-val">"hero__title"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-txt">静けさと品格が息づく、</span>
+  <span class="hl-tag">&lt;em&gt;</span><span class="hl-txt">富士見台</span><span class="hl-tag">&lt;/em&gt;</span><span class="hl-txt">という選択。</span>
+<span class="hl-tag">&lt;/h1&gt;</span>
+<span class="hl-com">/* font-family:serif; font-size:2rem; color:white; line-height:1.5;
+   em → color:var(--c-accent); font-style:normal; */</span></pre></div>
+      </div>
+
+      <!-- hero__sub -->
+      <div class="mu">
+        <div class="mu-preview dark">
+          <span class="mu-tag">p.hero__sub</span>
+          <p class="hero__sub" style="margin-top:8px">名古屋北東部の緑豊かな邸宅地。<br>123㎡超・3LDK＋納戸、フルリノベーション済み。</p>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"hero__sub"</span><span class="hl-tag">&gt;</span><span class="hl-txt">名古屋北東部の緑豊かな邸宅地。〜</span><span class="hl-tag">&lt;/p&gt;</span>
+<span class="hl-com">/* color:rgba(255,255,255,.55); font-size:.85rem; line-height:1.85; */</span></pre></div>
+      </div>
+
+      <!-- hero__price -->
+      <div class="mu">
+        <div class="mu-preview dark">
+          <span class="mu-tag">p.hero__price</span>
+          <p class="hero__price-lbl" style="margin-top:8px">販売価格（税込）</p>
+          <p class="hero__price">6,972<small>万円</small></p>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"hero__price-lbl"</span><span class="hl-tag">&gt;</span><span class="hl-txt">販売価格（税込）</span><span class="hl-tag">&lt;/p&gt;</span>
+<span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"hero__price"</span><span class="hl-tag">&gt;</span><span class="hl-txt">6,972</span><span class="hl-tag">&lt;small&gt;</span><span class="hl-txt">万円</span><span class="hl-tag">&lt;/small&gt;&lt;/p&gt;</span>
+<span class="hl-com">/* font-family:serif; font-size:2.8rem; color:var(--c-accent); font-weight:700;
+   small → font-size:1rem; color:rgba(255,255,255,.45); */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION HEADINGS ===== -->
+    <section class="sg-section" id="headings-markup">
+      <h2 class="sg-section-title"><span class="sg-num">4</span> セクション見出し</h2>
+      <p class="sg-section-sub">スマホ（〜699px）では <code >.sec-eye</code> と <code >.sec-bar</code> を非表示。</p>
+
+      <div class="mu">
+        <div class="mu-preview" style="text-align:center">
+          <span class="mu-tag">div.sec-hd</span>
+          <div class="sec-hd" style="margin-top:8px">
+            <span class="sec-eye">FEATURES</span>
+            <h2 class="sec-title">この物件、6つの魅力</h2>
+            <div class="sec-bar"></div>
+          </div>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"sec-hd fu"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"sec-eye"</span><span class="hl-tag">&gt;</span><span class="hl-txt">FEATURES</span><span class="hl-tag">&lt;/span&gt;</span>
+  <span class="hl-tag">&lt;h2</span> <span class="hl-attr">class</span>=<span class="hl-val">"sec-title"</span><span class="hl-tag">&gt;</span><span class="hl-txt">この物件、6つの魅力</span><span class="hl-tag">&lt;/h2&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"sec-bar"</span><span class="hl-tag">&gt;&lt;/div&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-com">/* .sec-eye  → font-size:.62rem; color:var(--c-accent); letter-spacing:.22em;
+   .sec-title → font-family:serif; font-size:1.4rem; color:var(--c-primary);
+   .sec-bar   → width:36px; height:2px; background:var(--c-accent); margin:14px auto;
+   スマホ → .sec-eye, .sec-bar { display:none } */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== STATS ===== -->
+    <section class="sg-section" id="stats-markup">
+      <h2 class="sg-section-title"><span class="sg-num">5</span> スタッツ帯</h2>
+      <p class="sg-section-sub">Hero 直下の4グリッド数値帯。</p>
+
+      <div class="mu">
+        <div class="mu-preview" style="padding:0">
+          <span class="mu-tag" style="position:static;display:inline-block;margin:12px 0 0 12px">div.stats</span>
+          <div class="stats">
+            <div class="stat"><p class="stat__lbl">専有面積</p><p class="stat__val">123.95<small>㎡</small></p></div>
+            <div class="stat"><p class="stat__lbl">間取り</p><p class="stat__val">3LDK<small>＋納戸</small></p></div>
+            <div class="stat"><p class="stat__lbl">バルコニー合計</p><p class="stat__val">64<small>㎡超</small></p></div>
+            <div class="stat"><p class="stat__lbl">最寄り駅</p><p class="stat__val">徒歩<span style="font-size:1.3rem">11</span><small>分</small></p></div>
+          </div>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"stats"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"stat"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"stat__lbl"</span><span class="hl-tag">&gt;</span><span class="hl-txt">専有面積</span><span class="hl-tag">&lt;/p&gt;</span>
+    <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"stat__val"</span><span class="hl-tag">&gt;</span><span class="hl-txt">123.95</span><span class="hl-tag">&lt;small&gt;</span><span class="hl-txt">㎡</span><span class="hl-tag">&lt;/small&gt;&lt;/p&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-com">/* × 4 */</span>
+<span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-com">/* .stats   → background:var(--c-primary); grid-template-columns:repeat(2,1fr);
+   .stat__lbl → color:rgba(255,255,255,.4); font-size:.64rem;
+   .stat__val → color:var(--c-accent); font-size:1.5rem; font-weight:700; */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== BUTTONS ===== -->
+    <section class="sg-section" id="button-markup">
+      <h2 class="sg-section-title"><span class="sg-num">6</span> ボタン</h2>
+      <p class="sg-section-sub">全ボタンに <code >.btn</code> を付与し、バリアントクラスで見た目を変える。</p>
+
+      <div class="mu">
+        <div class="mu-preview dark">
+          <span class="mu-tag">a.btn.btn-gold</span>
+          <a class="btn btn-gold" style="max-width:280px;margin:18px auto 0">
+            <i class="fa-regular fa-calendar"></i> 内覧を予約する
+          </a>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;a</span> <span class="hl-attr">href</span>=<span class="hl-val">"#form"</span> <span class="hl-attr">class</span>=<span class="hl-val">"btn btn-gold"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;i</span> <span class="hl-attr">class</span>=<span class="hl-val">"fa-regular fa-calendar"</span><span class="hl-tag">&gt;&lt;/i&gt;</span> <span class="hl-txt">内覧を予約する</span>
+<span class="hl-tag">&lt;/a&gt;</span>
+<span class="hl-com">/* background:linear-gradient(135deg, #C9A96E, #b8955a); color:white;
+   padding:15px 0; width:100%; font-size:.95rem; font-weight:700; */</span></pre></div>
+      </div>
+
+      <div class="mu">
+        <div class="mu-preview dark">
+          <span class="mu-tag">a.btn.btn-ghost</span>
+          <a class="btn btn-ghost" style="max-width:280px;margin:18px auto 0">
+            <i class="fa-regular fa-envelope"></i> お問い合わせする
+          </a>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;a</span> <span class="hl-attr">href</span>=<span class="hl-val">"#form"</span> <span class="hl-attr">class</span>=<span class="hl-val">"btn btn-ghost"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;i</span> <span class="hl-attr">class</span>=<span class="hl-val">"fa-regular fa-envelope"</span><span class="hl-tag">&gt;&lt;/i&gt;</span> <span class="hl-txt">お問い合わせする</span>
+<span class="hl-tag">&lt;/a&gt;</span>
+<span class="hl-com">/* background:transparent; color:white;
+   border:1.5px solid rgba(255,255,255,.4);
+   hover → border-color:var(--c-accent); color:var(--c-accent); */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== BADGES ===== -->
+    <section class="sg-section" id="badge-markup">
+      <h2 class="sg-section-title"><span class="sg-num">7</span> バッジ・ラベル</h2>
+      <p class="sg-section-sub">インラインで使う小さなテキストラベル群。</p>
+
+      <div class="mu">
+        <div class="mu-preview dark">
+          <span class="mu-tag">span.sec-eye</span>
+          <span class="sec-eye" style="margin-top:10px;display:block">FEATURES</span>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"sec-eye"</span><span class="hl-tag">&gt;</span><span class="hl-txt">FEATURES</span><span class="hl-tag">&lt;/span&gt;</span>
+<span class="hl-com">/* display:block; color:var(--c-accent); font-size:.62rem;
+   letter-spacing:.22em; text-transform:uppercase;
+   @media(max-width:699px) { display:none } */</span></pre></div>
+      </div>
+
+      <div class="mu">
+        <div class="mu-preview">
+          <span class="mu-tag">span.hl-eye</span>
+          <span class="hl-eye" style="margin-top:10px;display:block">PREMIUM KITCHEN</span>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"hl-eye"</span><span class="hl-tag">&gt;</span><span class="hl-txt">PREMIUM KITCHEN</span><span class="hl-tag">&lt;/span&gt;</span>
+<span class="hl-com">/* color:var(--c-accent); font-size:.64rem; letter-spacing:.16em; */</span></pre></div>
+      </div>
+
+      <div class="mu">
+        <div class="mu-preview">
+          <span class="mu-tag">span.req</span>
+          <p style="font-size:.85rem;color:var(--c-text-mid);margin-top:10px">お名前 <span class="req">必須</span></p>
+        </div>
+        <div class="mu-code"><pre><span class="hl-txt">お名前 </span><span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"req"</span><span class="hl-tag">&gt;</span><span class="hl-txt">必須</span><span class="hl-tag">&lt;/span&gt;</span>
+<span class="hl-com">/* color:#c0392b; font-size:.65rem; */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== FEAT CARD ===== -->
+    <section class="sg-section" id="card-markup">
+      <h2 class="sg-section-title"><span class="sg-num">8</span> フィーチャーカード</h2>
+      <p class="sg-section-sub">「6つの魅力」で使う左ボーダーグラデーション付きカード。</p>
+
+      <div class="mu">
+        <div class="mu-preview warm">
+          <span class="mu-tag">div.feat-card</span>
+          <div class="feat-card" style="margin-top:18px">
+            <span class="feat-card__ico"><i class="fa-solid fa-bell-concierge"></i></span>
+            <div>
+              <h3 class="feat-card__title">コンシェルジュ付き低層レジデンス</h3>
+              <p class="feat-card__desc">専任コンシェルジュが常駐する格式ある低層マンション。オートロック・宅配BOXを完備し、上質な暮らしをサポートする管理体制を整えています。</p>
+            </div>
+            <span class="feat-card__no">04</span>
+          </div>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"feat-card fu"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"feat-card__ico"</span><span class="hl-tag">&gt;&lt;i</span> <span class="hl-attr">class</span>=<span class="hl-val">"fa-solid fa-bell-concierge"</span><span class="hl-tag">&gt;&lt;/i&gt;&lt;/span&gt;</span>
+  <span class="hl-tag">&lt;div&gt;</span>
+    <span class="hl-tag">&lt;h3</span> <span class="hl-attr">class</span>=<span class="hl-val">"feat-card__title"</span><span class="hl-tag">&gt;</span><span class="hl-txt">コンシェルジュ付き低層レジデンス</span><span class="hl-tag">&lt;/h3&gt;</span>
+    <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"feat-card__desc"</span><span class="hl-tag">&gt;</span><span class="hl-txt">説明テキスト…</span><span class="hl-tag">&lt;/p&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"feat-card__no"</span><span class="hl-tag">&gt;</span><span class="hl-txt">04</span><span class="hl-tag">&lt;/span&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-com">/* ::before → 左ボーダー3px gradient(--c-accent → --c-accent-lt)
+   .feat-card__title → serif; font-size:.95rem; color:var(--c-primary)
+   .feat-card__no    → font-size:2rem; color:rgba(201,169,110,.1) */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== HIGHLIGHTS ===== -->
+    <section class="sg-section" id="hl-markup">
+      <h2 class="sg-section-title"><span class="sg-num">9</span> ハイライト（選ばれる理由）</h2>
+      <p class="sg-section-sub">画像（16:9）＋テキストの縦積みコンポーネント。3点セット。</p>
+
+      <div class="mu">
+        <div class="mu-preview">
+          <span class="mu-tag">div.hl-item</span>
+          <div style="max-width:420px;margin-top:18px">
+            <div class="hl-img hl-img-ph"><span>[ 写真 aspect-ratio: 16/9 ]</span></div>
+            <p class="hl-no">01</p>
+            <p class="hl-eye">ORIGINAL ISLAND KITCHEN</p>
+            <h3 class="hl-title">オリジナルアイランドキッチンと<br>約26帖LDKの一体空間</h3>
+            <p class="hl-desc">造作のオリジナルアイランドキッチンはダイニングテーブルと一体化した設計。ふんだんな間接照明が、静けさと荘厳さを纏う空間を演出します。</p>
+          </div>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"hl-item fu"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"hl-img"</span><span class="hl-tag">&gt;&lt;img</span> <span class="hl-attr">src</span>=<span class="hl-val">"img/photo_interior10.jpg"</span> <span class="hl-attr">alt</span>=<span class="hl-val">"キッチン"</span><span class="hl-tag">&gt;&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"hl-no"</span><span class="hl-tag">&gt;</span><span class="hl-txt">01</span><span class="hl-tag">&lt;/p&gt;</span>
+  <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"hl-eye"</span><span class="hl-tag">&gt;</span><span class="hl-txt">ORIGINAL ISLAND KITCHEN</span><span class="hl-tag">&lt;/p&gt;</span>
+  <span class="hl-tag">&lt;h3</span> <span class="hl-attr">class</span>=<span class="hl-val">"hl-title"</span><span class="hl-tag">&gt;</span><span class="hl-txt">タイトル</span><span class="hl-tag">&lt;/h3&gt;</span>
+  <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"hl-desc"</span><span class="hl-tag">&gt;</span><span class="hl-txt">説明テキスト…</span><span class="hl-tag">&lt;/p&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-com">/* .hl-img  → aspect-ratio:16/9; object-fit:cover; border-radius:6px
+   .hl-no   → font-size:2.8rem; color:rgba(201,169,110,.18)
+   .hl-title → serif; font-size:1.2rem; color:var(--c-primary) */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== ACCESS LIST ===== -->
+    <section class="sg-section" id="access-markup">
+      <h2 class="sg-section-title"><span class="sg-num">10</span> アクセスリスト</h2>
+      <p class="sg-section-sub">アイコン正円（38px）＋ラベル＋値のリスト。</p>
+
+      <div class="mu">
+        <div class="mu-preview">
+          <span class="mu-tag">ul.access-list</span>
+          <ul class="access-list" style="margin-top:18px;max-width:440px">
+            <li>
+              <span class="a-ico"><i class="fa-solid fa-train-subway"></i></span>
+              <div><p class="a-lbl">最寄り駅</p><p class="a-val">名古屋市営地下鉄名城線「自由ヶ丘」駅 徒歩11分</p></div>
+            </li>
+            <li>
+              <span class="a-ico"><i class="fa-solid fa-cart-shopping"></i></span>
+              <div><p class="a-lbl">スーパー</p><p class="a-val">富士見台フランテ　徒歩6分（約480m）</p></div>
+            </li>
+            <li>
+              <span class="a-ico"><i class="fa-solid fa-hospital"></i></span>
+              <div><p class="a-lbl">病院</p><p class="a-val">自由ヶ丘病院　徒歩3分（約200m）</p></div>
+            </li>
+          </ul>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;ul</span> <span class="hl-attr">class</span>=<span class="hl-val">"access-list"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;li&gt;</span>
+    <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"a-ico"</span><span class="hl-tag">&gt;&lt;i</span> <span class="hl-attr">class</span>=<span class="hl-val">"fa-solid fa-train-subway"</span><span class="hl-tag">&gt;&lt;/i&gt;&lt;/span&gt;</span>
+    <span class="hl-tag">&lt;div&gt;</span>
+      <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"a-lbl"</span><span class="hl-tag">&gt;</span><span class="hl-txt">最寄り駅</span><span class="hl-tag">&lt;/p&gt;</span>
+      <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"a-val"</span><span class="hl-tag">&gt;</span><span class="hl-txt">自由ヶ丘駅 徒歩11分</span><span class="hl-tag">&lt;/p&gt;</span>
+    <span class="hl-tag">&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;/li&gt;</span>
+<span class="hl-tag">&lt;/ul&gt;</span>
+<span class="hl-com">/* .a-ico → width/height:38px; border-radius:50%; border:1px solid var(--c-border);
+   .a-lbl → font-size:.64rem; color:var(--c-text-lt);
+   .a-val → font-weight:500; */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== TABLE ===== -->
+    <section class="sg-section" id="table-markup">
+      <h2 class="sg-section-title"><span class="sg-num">11</span> テーブル（物件詳細）</h2>
+      <p class="sg-section-sub">th 幅 34%。背景 <code >--c-bg-warm</code>。</p>
+
+      <div class="mu">
+        <div class="mu-preview warm">
+          <span class="mu-tag">table.specs-table</span>
+          <table class="specs-table" style="margin-top:18px">
+            <tr><th>物件名</th><td><strong>ライオンズセレブ富士見台壱番館</strong></td></tr>
+            <tr><th>間取り</th><td><strong>3LDK＋納戸</strong>×1</td></tr>
+            <tr><th>専有面積</th><td><strong>123.95㎡</strong></td></tr>
+            <tr><th>バルコニー</th><td>南北合計64㎡超（南向き42.32㎡含む）</td></tr>
+            <tr><th>ペット</th><td>可（細則有・体長30cm・1匹まで）</td></tr>
+          </table>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;table</span> <span class="hl-attr">class</span>=<span class="hl-val">"specs-table"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;tr&gt;</span>
+    <span class="hl-tag">&lt;th&gt;</span><span class="hl-txt">物件名</span><span class="hl-tag">&lt;/th&gt;</span>
+    <span class="hl-tag">&lt;td&gt;&lt;strong&gt;</span><span class="hl-txt">ライオンズセレブ富士見台壱番館</span><span class="hl-tag">&lt;/strong&gt;&lt;/td&gt;</span>
+  <span class="hl-tag">&lt;/tr&gt;</span>
+  <span class="hl-com">/* 以下同様 */</span>
+<span class="hl-tag">&lt;/table&gt;</span>
+<span class="hl-com">/* th → width:34%; background:var(--c-bg-warm); color:var(--c-text-lt);
+         font-size:.76rem; font-weight:500;
+   td → color:var(--c-text); */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== FORM ===== -->
+    <section class="sg-section" id="form-markup">
+      <h2 class="sg-section-title"><span class="sg-num">12</span> フォーム</h2>
+      <p class="sg-section-sub">フォーカス時にボーダーがゴールドへ変化。</p>
+
+      <div class="mu">
+        <div class="mu-preview">
+          <span class="mu-tag">input / select / textarea</span>
+          <div style="max-width:420px;margin-top:18px">
+            <div class="form-group">
+              <label class="form-label">お名前 <span class="req">必須</span></label>
+              <input class="form-input" type="text" placeholder="山田 太郎">
+            </div>
+            <div class="form-group">
+              <label class="form-label">お問い合わせ種別 <span class="req">必須</span></label>
+              <select class="form-input">
+                <option>内覧予約</option>
+                <option>資料請求</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">メッセージ</label>
+              <textarea class="form-input" rows="3" placeholder="ご質問・ご要望をご記入ください"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"form-group"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;label</span> <span class="hl-attr">class</span>=<span class="hl-val">"form-label"</span><span class="hl-tag">&gt;</span><span class="hl-txt">お名前 </span><span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"req"</span><span class="hl-tag">&gt;</span><span class="hl-txt">必須</span><span class="hl-tag">&lt;/span&gt;&lt;/label&gt;</span>
+  <span class="hl-tag">&lt;input</span> <span class="hl-attr">class</span>=<span class="hl-val">"form-input"</span> <span class="hl-attr">type</span>=<span class="hl-val">"text"</span> <span class="hl-attr">placeholder</span>=<span class="hl-val">"山田 太郎"</span><span class="hl-tag">&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span>
+
+<span class="hl-com">/* .form-label → font-size:.75rem; color:var(--c-text-mid);
+   .form-input → padding:12px 14px; border:1px solid var(--c-border);
+   :focus      → border-color:var(--c-accent); */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== CTA BAND ===== -->
+    <section class="sg-section" id="cta-markup">
+      <h2 class="sg-section-title"><span class="sg-num">13</span> CTAバンド</h2>
+      <p class="sg-section-sub">セクション間の行動喚起バナー。gradient ネイビー背景。</p>
+
+      <div class="mu">
+        <div class="mu-preview" style="padding:0">
+          <span class="mu-tag" style="position:static;display:inline-block;margin:12px 0 0 12px">section.cta-band</span>
+          <div class="cta-band">
+            <span class="cta-band__eye">LIMITED OPPORTUNITY</span>
+            <h2 class="cta-band__title">空室・即時引渡可能。<br>この機会をお見逃しなく。</h2>
+            <p class="cta-band__sub">実際にご覧いただくことで<br>写真では伝わりにくい魅力をご実感いただけます。</p>
+            <div class="cta-band__btns">
+              <a class="btn btn-gold"><i class="fa-regular fa-calendar"></i> 内覧予約をする</a>
+              <a class="btn btn-ghost"><i class="fa-regular fa-envelope"></i> お問い合わせする</a>
+            </div>
+          </div>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;section</span> <span class="hl-attr">class</span>=<span class="hl-val">"cta-band"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"cta-band__eye fu"</span><span class="hl-tag">&gt;</span><span class="hl-txt">LIMITED OPPORTUNITY</span><span class="hl-tag">&lt;/span&gt;</span>
+  <span class="hl-tag">&lt;h2</span> <span class="hl-attr">class</span>=<span class="hl-val">"cta-band__title fu"</span><span class="hl-tag">&gt;</span><span class="hl-txt">空室・即時引渡可能。</span><span class="hl-tag">&lt;/h2&gt;</span>
+  <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"cta-band__sub fu"</span><span class="hl-tag">&gt;</span><span class="hl-txt">説明テキスト</span><span class="hl-tag">&lt;/p&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"cta-band__btns fu"</span><span class="hl-tag">&gt;</span>
+    <span class="hl-tag">&lt;a</span> <span class="hl-attr">class</span>=<span class="hl-val">"btn btn-gold"</span><span class="hl-tag">&gt;</span><span class="hl-txt">…</span><span class="hl-tag">&lt;/a&gt;</span>
+    <span class="hl-tag">&lt;a</span> <span class="hl-attr">class</span>=<span class="hl-val">"btn btn-ghost"</span><span class="hl-tag">&gt;</span><span class="hl-txt">…</span><span class="hl-tag">&lt;/a&gt;</span>
+  <span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-tag">&lt;/section&gt;</span>
+<span class="hl-com">/* background:linear-gradient(135deg, --c-primary-dk, --c-primary);
+   text-align:center; padding:52px 20px; */</span></pre></div>
+      </div>
+    </section>
+
+    <!-- ===== MISC ===== -->
+    <section class="sg-section" id="misc-markup">
+      <h2 class="sg-section-title"><span class="sg-num">14</span> その他パーツ</h2>
+      <p class="sg-section-sub">エリア説明文・フロアプラン・PC左サイドバー。</p>
+
+      <!-- area-desc -->
+      <div class="mu">
+        <div class="mu-preview warm">
+          <span class="mu-tag">p.area-desc</span>
+          <p class="area-desc" style="margin-top:18px">名古屋北東部の丘陵地に広がる住宅街「富士見台」。低層地域に位置し、緑豊かな高台エリアは喧騒から少し離れた静かな邸宅地として知られています。</p>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"area-desc"</span><span class="hl-tag">&gt;</span><span class="hl-txt">エリア説明テキスト…</span><span class="hl-tag">&lt;/p&gt;</span>
+<span class="hl-com">/* border-left:3px solid var(--c-accent);
+   background:var(--c-bg-warm); padding:16px 18px;
+   font-size:.82rem; line-height:1.95; */</span></pre></div>
+      </div>
+
+      <!-- floorplan -->
+      <div class="mu">
+        <div class="mu-preview warm">
+          <span class="mu-tag">div.floorplan-wrap</span>
+          <div class="floorplan-wrap" style="margin-top:18px;max-width:340px">
+            <p class="floorplan-label">間取り図</p>
+            <div style="background:var(--c-border);height:100px;border-radius:4px;display:flex;align-items:center;justify-content:center">
+              <span style="color:var(--c-text-lt);font-size:.75rem">house map.gif</span>
+            </div>
+          </div>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"fu floorplan-wrap"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;p</span> <span class="hl-attr">class</span>=<span class="hl-val">"floorplan-label"</span><span class="hl-tag">&gt;</span><span class="hl-txt">間取り図</span><span class="hl-tag">&lt;/p&gt;</span>
+  <span class="hl-tag">&lt;img</span> <span class="hl-attr">src</span>=<span class="hl-val">"img/house%20map.gif"</span> <span class="hl-attr">alt</span>=<span class="hl-val">"間取り図"</span> <span class="hl-attr">class</span>=<span class="hl-val">"floorplan-img"</span><span class="hl-tag">&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-com">/* .floorplan-wrap  → background:var(--c-bg-warm); border-radius:6px; padding:20px;
+   .floorplan-label → font-size:.72rem; color:var(--c-text-lt);
+   .floorplan-img   → width:100%; */</span></pre></div>
+      </div>
+
+      <!-- pc-left -->
+      <div class="mu">
+        <div class="mu-preview dark" style="display:flex;align-items:center;justify-content:center;min-height:220px">
+          <span class="mu-tag">div.pc-left</span>
+          <div class="pc-left-demo">
+            <span class="pc-left__name">ライオンズセレブ富士見台壱番館</span>
+            <div class="pc-left__line"></div>
+            <span class="pc-left__sub">Nagoya · Chikusa</span>
+          </div>
+        </div>
+        <div class="mu-code"><pre><span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"pc-left"</span> <span class="hl-attr">aria-hidden</span>=<span class="hl-val">"true"</span><span class="hl-tag">&gt;</span>
+  <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"pc-left__name"</span><span class="hl-tag">&gt;</span><span class="hl-txt">ライオンズセレブ富士見台壱番館</span><span class="hl-tag">&lt;/span&gt;</span>
+  <span class="hl-tag">&lt;div</span> <span class="hl-attr">class</span>=<span class="hl-val">"pc-left__line"</span><span class="hl-tag">&gt;&lt;/div&gt;</span>
+  <span class="hl-tag">&lt;span</span> <span class="hl-attr">class</span>=<span class="hl-val">"pc-left__sub"</span><span class="hl-tag">&gt;</span><span class="hl-txt">Nagoya · Chikusa</span><span class="hl-tag">&lt;/span&gt;</span>
+<span class="hl-tag">&lt;/div&gt;</span>
+<span class="hl-com">/* display:none; @media(min-width:700px) { display:flex }
+   position:fixed; right:calc(50% + --col-w/2 + 28px); top:50%;
+   .pc-left__name → writing-mode:vertical-rl; serif; 1.2rem; 600
+   .pc-left__line → width:1px; height:48px; gradient gold
+   .pc-left__sub  → writing-mode:vertical-rl; .58rem; gold; uppercase */</span></pre></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="copy-toast" id="toast">コピーしました！</div>
+
+<script>
+  function copy(text) {
+    const show = () => {
+      const t = document.getElementById('toast');
+      t.textContent = 'コピー: ' + text;
+      t.classList.add('show');
+      clearTimeout(t._t);
+      t._t = setTimeout(() => t.classList.remove('show'), 2000);
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(show).catch(show);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta); show();
+    }
+  }
+
+  // Sidebar active highlight
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.sg-nav a').forEach(a => a.classList.remove('is-active'));
+        const a = document.querySelector(`.sg-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('is-active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  document.querySelectorAll('.sg-section[id]').forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>
