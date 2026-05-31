@@ -470,25 +470,78 @@
        モバイルナビ オーバーレイ
        ===================== */
       .mnav {
-        display: none; /* JS で flex に切替 */
+        display: none;
         position: fixed;
-        top: var(--hd-h);
+        top: 0;
         left: 50%;
         transform: translateX(-50%);
         width: min(var(--col-w), 100%);
         bottom: 0;
         z-index: 99;
-        background: rgba(8, 14, 22, 0.97);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
-        gap: 0;
+        padding: 0 32px;
+        opacity: 0;
+        transition: opacity .35s ease;
       }
-      .mnav.is-open {
+      .mnav.is-open { display: flex; }
+      .mnav.is-visible { opacity: 1; }
+
+      .mnav__links {
         display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: 100%;
+        margin-bottom: 0;
       }
+      .mnav__links a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 8px;
+        color: #fff;
+        border-bottom: none;
+        border-radius: 4px;
+        transition: background var(--tr);
+        width: auto;
+        text-align: left;
+        justify-content: flex-start;
+      }
+      .mnav__links a:first-child { border-top: none; }
+      .mnav__links a:hover { background: rgba(255,255,255,.06); }
+      .mnav__links a::before { content: none; }
+      .mnav__dot {
+        width: 20px;
+        height: 1.5px;
+        background: rgba(255,255,255,.4);
+        flex-shrink: 0;
+        transition: background var(--tr), width var(--tr);
+      }
+      .mnav__links a:hover .mnav__dot { background: var(--c-accent); width: 28px; }
+      .mnav__label {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+      }
+      .mnav__ja {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #fff;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+      }
+      .mnav__en {
+        font-size: 0.62rem;
+        color: rgba(201,169,110,.65);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .mnav__links a:hover .mnav__ja { color: var(--c-accent); }
       @media (min-width: 700px) {
         .mnav {
           display: none !important;
@@ -521,11 +574,6 @@
       }
       .mnav__links a:hover {
         color: var(--c-accent);
-      }
-      .mnav__links a::before {
-        content: "—";
-        color: var(--c-accent);
-        font-size: 0.7rem;
       }
 
       .mnav__cta {
@@ -1925,16 +1973,13 @@
       aria-label="メニュー"
     >
       <nav class="mnav__links">
-        <a href="#top" onclick="closeMnav()">TOP</a>
-        <a href="#features" onclick="closeMnav()">物件の魅力</a>
-        <a href="#gallery" onclick="closeMnav()">写真</a>
-        <a href="#specs" onclick="closeMnav()">物件詳細</a>
-        <a href="#access" onclick="closeMnav()">アクセス</a>
-        <a href="#form" onclick="closeMnav()">お問い合わせ</a>
+        <a href="#top"      onclick="closeMnav()"><span class="mnav__dot"></span><span class="mnav__label"><span class="mnav__ja">TOP</span><span class="mnav__en">Top</span></span></a>
+        <a href="#features" onclick="closeMnav()"><span class="mnav__dot"></span><span class="mnav__label"><span class="mnav__ja">物件の魅力</span><span class="mnav__en">Features</span></span></a>
+        <a href="#gallery"  onclick="closeMnav()"><span class="mnav__dot"></span><span class="mnav__label"><span class="mnav__ja">写真</span><span class="mnav__en">Gallery</span></span></a>
+        <a href="#specs"    onclick="closeMnav()"><span class="mnav__dot"></span><span class="mnav__label"><span class="mnav__ja">物件詳細</span><span class="mnav__en">Specs</span></span></a>
+        <a href="#access"   onclick="closeMnav()"><span class="mnav__dot"></span><span class="mnav__label"><span class="mnav__ja">アクセス</span><span class="mnav__en">Access</span></span></a>
+        <a href="#form"     onclick="closeMnav()"><span class="mnav__dot"></span><span class="mnav__label"><span class="mnav__ja">お問い合わせ</span><span class="mnav__en">Contact</span></span></a>
       </nav>
-      <a href="#form" class="mnav__cta" onclick="closeMnav()"
-        ><i class="fa-regular fa-calendar"></i> 内覧予約をする</a
-      >
     </div>
 
     <!-- ===== 固定ヘッダー ===== -->
@@ -2428,15 +2473,19 @@
 
       function openMnav() {
         mnav.classList.add("is-open");
+        requestAnimationFrame(() => mnav.classList.add("is-visible"));
         burger.classList.add("is-open");
         burger.setAttribute("aria-label", "メニューを閉じる");
         document.body.style.overflow = "hidden";
       }
       function closeMnav() {
-        mnav.classList.remove("is-open");
+        mnav.classList.remove("is-visible");
+        setTimeout(() => {
+          mnav.classList.remove("is-open");
+          document.body.style.overflow = "";
+        }, 350);
         burger.classList.remove("is-open");
         burger.setAttribute("aria-label", "メニューを開く");
-        document.body.style.overflow = "";
       }
       burger.addEventListener("click", () => {
         mnav.classList.contains("is-open") ? closeMnav() : openMnav();
@@ -2444,6 +2493,10 @@
       // ESCキーで閉じる
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeMnav();
+      });
+      // 固定フッターのボタンを押した時もメニューを閉じる
+      document.querySelectorAll('.fixed-cta a, .fixed-cta__btn, .fixed-cta__tel').forEach(el => {
+        el.addEventListener('click', () => { if (mnav.classList.contains('is-open')) closeMnav(); });
       });
 
       // =====================
@@ -2570,19 +2623,7 @@
         });
       });
 
-      // =====================
-      // 固定CTA：フォーム近くで非表示
-      // =====================
-      const fixedCta = document.getElementById("fixedCta");
-      new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            fixedCta.style.opacity = e.isIntersecting ? "0" : "1";
-            fixedCta.style.pointerEvents = e.isIntersecting ? "none" : "auto";
-          });
-        },
-        { threshold: 0.3 },
-      ).observe(document.getElementById("form"));
+      // 固定CTAは常時表示
 
       // =====================
       // フォーム送信（デモ）
