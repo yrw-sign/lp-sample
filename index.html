@@ -1683,6 +1683,59 @@
        フォーム
        ===================== */
       /* Google フォーム埋め込みエリア */
+      /* 仲介業者リスト */
+      .agent-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 32px;
+      }
+      .agent-card {
+        background: var(--c-white);
+        border: 1px solid var(--c-border);
+        border-left: 3px solid var(--c-accent);
+        padding: 18px 18px 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .agent-card__name {
+        font-family: var(--font-serif);
+        font-size: 1rem;
+        color: var(--c-primary);
+        font-weight: 600;
+      }
+      .agent-card__info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .agent-card__row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.78rem;
+        color: var(--c-text-mid);
+      }
+      .agent-card__row i {
+        color: var(--c-accent);
+        width: 14px;
+        flex-shrink: 0;
+        font-size: 0.75rem;
+      }
+      .agent-card__row a {
+        color: var(--c-primary);
+        font-weight: 500;
+      }
+      .agent-note {
+        font-size: 0.7rem;
+        color: var(--c-text-lt);
+        margin-bottom: 24px;
+        padding: 10px 14px;
+        background: var(--c-bg-warm);
+        border-radius: 4px;
+      }
+
       .gform-wrap {
         position: relative;
         background: var(--c-white);
@@ -2161,7 +2214,7 @@
             </tr>
             <tr>
               <th>バルコニー</th>
-              <td>南北合計64㎡超（南向き42.32㎡含む）</td>
+              <td>南側バルコニー 42.32㎡<br>北側テラス 21.79㎡</td>
             </tr>
             <tr>
               <th>階数</th>
@@ -2175,7 +2228,7 @@
               <th>築年月</th>
               <td>
                 2004年2月<br /><small style="color: var(--c-text-lt)"
-                  >（リフォーム：2025年4月完成）</small
+                  >（リフォーム：2026年4月完成）</small
                 >
               </td>
             </tr>
@@ -2185,12 +2238,20 @@
             </tr>
             <tr>
               <th>管理・設備</th>
-              <td>コンシェルジュ・オートロック・宅配BOX</td>
+              <td>コンシェルジュ・日勤管理・オートロック・宅配BOX</td>
+            </tr>
+            <tr>
+              <th>管理費</th>
+              <td>月額 18,240円</td>
+            </tr>
+            <tr>
+              <th>修繕積立金</th>
+              <td>月額 21,070円</td>
             </tr>
             <tr>
               <th>室内設備</th>
               <td>
-                床暖房・オリジナルアイランドキッチン・ジャグジー付きバス・パナソニック製トイレ（砂金カラー）・間接照明・ゴールドスイッチ・フロアタイル床・WIC・ユーティリティ・造付け食器棚
+                床暖房・オリジナルアイランドキッチン・ジャグジー付きバス・全自動掃除トイレ（砂金カラー）・間接照明・ゴールドスイッチ・フロアタイル床・WIC・ユーティリティスペース（納戸）・造付け食器棚
               </td>
             </tr>
             <tr>
@@ -2340,48 +2401,46 @@
           </p>
         </div>
         <!-- ============================================================
-             Google フォーム 埋め込みエリア
-             ============================================================
-             【設定手順】
-             1. Google フォームを作成・公開する
-             2. フォーム画面右上「送信」→「<>（埋め込み）」タブを選択
-             3. 表示された URL を下記 src の値と差し替える
-                例: src="https://docs.google.com/forms/d/e/xxxxxxxx/viewform?embedded=true"
-             4. height は回答項目数に合わせて調整（目安: 項目5〜7個 → 900px）
+             仲介業者 連絡先
+             ※ 業者が変わった場合は以下のカードを追加・変更してください
         ============================================================ -->
-        <div class="gform-wrap fu">
-          <iframe
-            class="gform-iframe"
-            src="about:blank"
-            data-src-placeholder="ここに Google フォームの埋め込み URL を入れてください"
-            width="100%"
-            height="880"
-            frameborder="0"
-            marginheight="0"
-            marginwidth="0"
-            title="内覧予約・お問い合わせフォーム"
-            >読み込んでいます…</iframe
-          >
-
-          <!-- src が空の間だけ表示されるプレースホルダー -->
-          <div class="gform-placeholder" aria-hidden="true">
-            <i
-              class="fa-brands fa-google"
-              style="
-                font-size: 2rem;
-                color: var(--c-accent);
-                margin-bottom: 16px;
-                display: block;
-              "
-            ></i>
-            <p class="gform-placeholder__ttl">Google フォームを埋め込む</p>
-            <p class="gform-placeholder__sub">
-              Google フォームの「送信 → 埋め込み」で取得した URL を<br />
-              このファイルの
-              <code>src="about:blank"</code> 部分に貼り付けてください。
-            </p>
+        <div class="fu">
+          <p class="agent-note">
+            <i class="fa-solid fa-circle-info" style="color:var(--c-accent);margin-right:6px"></i>
+            本物件のお問い合わせ・内覧予約は下記の仲介業者までご連絡ください。
+          </p>
+          <div class="agent-list">
+            <!-- 業者カード（複数追加可能） -->
+            <div class="agent-card">
+              <p class="agent-card__name">東急リバブル株式会社</p>
+              <div class="agent-card__info">
+                <div class="agent-card__row">
+                  <i class="fa-solid fa-phone"></i>
+                  <a href="tel:00000000000">000-0000-0000</a>
+                </div>
+                <div class="agent-card__row">
+                  <i class="fa-regular fa-envelope"></i>
+                  <span>example@tokyu-livable.co.jp</span>
+                </div>
+                <div class="agent-card__row">
+                  <i class="fa-regular fa-clock"></i>
+                  <span>営業時間 9:30〜18:00（定休日：水曜）</span>
+                </div>
+              </div>
+            </div>
+            <!-- ▼ 業者追加時はここにコピー＆ペーストしてください
+            <div class="agent-card">
+              <p class="agent-card__name">業者名</p>
+              <div class="agent-card__info">
+                <div class="agent-card__row"><i class="fa-solid fa-phone"></i><a href="tel:xxx">000-0000-0000</a></div>
+                <div class="agent-card__row"><i class="fa-regular fa-envelope"></i><span>メールアドレス</span></div>
+                <div class="agent-card__row"><i class="fa-regular fa-clock"></i><span>営業時間</span></div>
+              </div>
+            </div>
+            ▲ -->
           </div>
         </div>
+
       </section>
 
       <!-- FOOTER -->
